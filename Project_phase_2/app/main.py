@@ -85,25 +85,22 @@ def translate():
 
     try:
         translation = translator.translate(text, src=source_lang, dest=target_lang)
-        if translation is not None and translation.text is not None:
-            translated_text = translation.text
-            print(translated_text)
+        translated_text = translation.text
+        print(translated_text)
 
-            if current_user.is_authenticated:
-                user_id = current_user.id
-                new_translation = TranslationHistory(
-                    user_id=user_id,
-                    text=text,
-                    source_lang=source_lang,
-                    target_lang=target_lang,
-                    translation=translated_text
-                )
-                db.session.add(new_translation)
-                db.session.commit()
+        if current_user.is_authenticated:
+            user_id = current_user.id
+            new_translation = TranslationHistory(
+                user_id=user_id,
+                text=text,
+                source_lang=source_lang,
+                target_lang=target_lang,
+                translation=translated_text
+            )
+            db.session.add(new_translation)
+            db.session.commit()
 
-            return translated_text
-        else:
-            return 'Translation not available'
+        return translated_text
     except:
         return 'Unknown'
 
